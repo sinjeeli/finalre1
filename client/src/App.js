@@ -4,6 +4,8 @@ import Courses from './Courses';
 import CourseDetail from './CourseDetail';
 import CreateCourse from './CreateCourse';
 import UserSignIn from './UserSignIn';
+import UpdateCourse from './UpdateCourse';
+
 
 import './App.css';
 
@@ -20,6 +22,7 @@ function App() {
             <Route path="/courses/:id" element={<CourseDetail />} />
             <Route path="/create" element={<CreateCourse />} />
             <Route path="/sign-in" element={<UserSignIn />} />
+            <Route path="/courses/:id/update" element={<UpdateCourse />} />
             {/* Other routes... */}
           </Routes>
         </main>
