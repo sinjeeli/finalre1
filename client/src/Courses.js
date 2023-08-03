@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -25,9 +26,14 @@ function Courses() {
       <h2>Course List</h2>
       <ul>
         {courses.map((course) => (
-          <li key={course.id}>{course.title}</li>
+          <li key={course.id}>
+            {/* Link to the individual course detail screen */}
+            <Link to={`/courses/${course.id}`}>{course.title}</Link>
+          </li>
         ))}
       </ul>
+      {/* Link to the "Create Course" screen */}
+      <Link to="/create">Create Course</Link>
     </div>
   );
 }
