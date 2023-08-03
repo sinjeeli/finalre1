@@ -5,6 +5,9 @@ import CourseDetail from './CourseDetail';
 import CreateCourse from './CreateCourse';
 import UserSignIn from './UserSignIn';
 import UpdateCourse from './UpdateCourse';
+import UserSignOut from './UserSignOut';
+import UserSignUp from './UserSignUp';
+
 import Header from './Header';
 
 import './App.css';
@@ -36,6 +39,10 @@ function App() {
             <Route path="/create" element={<CreateCourse />} />
             <Route path="/sign-in" element={<UserSignIn />} />
             <Route path="/courses/:id/update" element={<UpdateCourse />} />
+            <Route path="/sign-out" element={<UserSignOut />} />
+            <Route path="/sign-up" element={<UserSignUp />} />
+            
+
             {/* Other routes... */}
           </Routes>
         </main>
