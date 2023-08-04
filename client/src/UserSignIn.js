@@ -1,12 +1,11 @@
-// UserSignIn.js
 import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';  // <-- Add useLocation import here
+import { useNavigate, useLocation, Link } from 'react-router-dom';  
 import { useUserContext } from './UserContext'; // Import the useUserContext hook
 
 function UserSignIn() {
     const navigate = useNavigate();
-    const location = useLocation();  // <-- Get location here
-    const { signIn } = useUserContext(); // Use the signIn method from the UserContext
+    const location = useLocation();  
+    const { signIn } = useUserContext(); 
     const [formData, setFormData] = useState({
       emailAddress: '',
       password: '',

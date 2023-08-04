@@ -27,7 +27,7 @@ function CourseDetail() {
 
     fetchCourseDetail(); // Fetch the course detail when the component mounts
 
-    // Clean up the state when the component unmounts
+    //
     return () => setCourse(null);
   }, [id]); // Include id in the dependency array
 
@@ -43,7 +43,7 @@ function CourseDetail() {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      // Navigate back to the course list after successful deletion
+      // Navigate back to the course list
       navigate('/courses');
     } catch (error) {
       console.error('Error deleting course:', error);

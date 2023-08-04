@@ -36,7 +36,6 @@ function UpdateCourse() {
     };
     fetchCourseDetails();
   }, [id]);
-//Update the UpdateCourse component to redirect users to the /forbidden path if the requested course isn't owned by the authenticated user.
   
   const handleChange = (event) => {
     const { name, value } = event.target;

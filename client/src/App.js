@@ -1,4 +1,3 @@
-// App.js
 import { BrowserRouter as Router, Route, Link, Navigate, Routes } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 import Courses from './Courses';
@@ -9,10 +8,10 @@ import UpdateCourse from './UpdateCourse';
 import UserSignOut from './UserSignOut';
 import UserSignUp from './UserSignUp';
 import { UserProvider } from './UserContext';
-import NotFound from './NotFound'; // <-- import NotFound component
-import UnhandledError from './UnhandledError'; // <-- import UnhandledError component
+import NotFound from './NotFound'; 
+import UnhandledError from './UnhandledError'; 
 import Header from './Header';
-import Forbidden from './Forbidden'; // <-- import Forbidden component
+import Forbidden from './Forbidden'; 
 
 
 import './App.css';
@@ -29,10 +28,10 @@ function ProtectedRoutes() {
       <Route path="/courses/:id/update" element={user ? <UpdateCourse /> : <Navigate to="/sign-in" state={{ from: '/courses/:id/update' }} />} />
       <Route path="/sign-up" element={<UserSignUp />} />
       <Route path="/sign-out" element={<UserSignOut />} />
-      <Route path="/notfound" element={<NotFound />} /> {/* <-- add NotFound route */}
-      <Route path="/error" element={<UnhandledError />} /> {/* <-- add UnhandledError route */}
-      <Route path="/forbidden" element={<Forbidden />} /> {/* <-- add Forbidden route */}
-      <Route path="*" element={<Navigate to="/notfound" />} /> {/* <-- catch-all route */}
+      <Route path="/notfound" element={<NotFound />} /> 
+      <Route path="/error" element={<UnhandledError />} /> 
+      <Route path="/forbidden" element={<Forbidden />} /> 
+      <Route path="*" element={<Navigate to="/notfound" />} /> 
     </Routes>
   );
 }
@@ -54,7 +53,6 @@ function App() {
                 <li>
                   <Link to="/create-course">Create Course</Link>
                 </li>
-                {/* Add other navigation links as needed */}
               </ul>
             </nav>
             <ProtectedRoutes />

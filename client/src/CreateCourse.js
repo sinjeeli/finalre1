@@ -51,7 +51,7 @@ function CreateCourse() {
         if (text) {
           const errorData = JSON.parse(text);
           if (errorData.errors) {
-            // Assuming errorData.errors is an array of strings
+            
             setValidationErrors(errorData.errors);
           }
         }
