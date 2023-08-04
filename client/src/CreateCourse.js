@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUserContext } from './UserContext'; // make sure the path is correct
+import { useUserContext } from './UserContext';
 
 function CreateCourse() {
   const navigate = useNavigate();
-  const { user, credentials } = useUserContext(); // <-- Call the hook here, at the top level of your component
+  const { user, credentials } = useUserContext();
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    userId: user.id, // Assuming the 'user' object contains an 'id' property
+    estimatedTime: '',
+    materialsNeeded: '',
+    userId: user.id,
   });
 
   const [validationErrors, setValidationErrors] = useState({});
@@ -21,11 +23,16 @@ function CreateCourse() {
       [name]: value,
     }));
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    const credentialsBase64 = btoa(`${credentials.emailAddress}:${credentials.password}`); // <-- Use 'user' from the top-level context
+    // Client-side validation
+    if (!formData.title || !formData.description) {
+      setValidationErrors(['Please provide a value for "Title"', 'Please provide a value for "Description"']);
+      return;
+    }
+  
+    const credentialsBase64 = btoa(`${credentials.emailAddress}:${credentials.password}`);
   
     try {
       const response = await fetch('http://localhost:5000/api/courses', {
@@ -36,57 +43,80 @@ function CreateCourse() {
         },
         body: JSON.stringify(formData),
       });
+  
       if (response.ok) {
         navigate('/');
       } else {
         const text = await response.text();
-        if (text) { // Only parse the response text as JSON if there is any text
+        if (text) {
           const errorData = JSON.parse(text);
           if (errorData.errors) {
+            // Assuming errorData.errors is an array of strings
             setValidationErrors(errorData.errors);
           }
         }
-      } // This closing bracket was missing
+      }
     } catch (error) {
       console.error('Error creating course:', error);
     }
   };
   
+  
   return (
     <div className="wrap">
       <h2>Create Course</h2>
+      {
+  validationErrors.length > 0 ? (
+    <div className="validation--errors">
+      <h3>Validation Errors</h3>
+      <ul>
+        {validationErrors.map((error, index) => <li key={index}>{error}</li>)}
+      </ul>
+    </div>
+  ) : null
+}
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-          {validationErrors.title && (
-            <p className="validation--errors">{validationErrors.title}</p>
-          )}
+        <div className="main--flex">
+          <div>
+            <label htmlFor="courseTitle">Course Title</label>
+            <input
+              id="courseTitle"
+              name="title"
+              type="text"
+              value={formData.title}
+              onChange={handleChange}
+            />
+            <p>By {user.firstName} {user.lastName}</p>
+            <label htmlFor="courseDescription">Course Description</label>
+            <textarea
+              id="courseDescription"
+              name="description"
+              onChange={handleChange}
+              value={formData.description}
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="estimatedTime">Estimated Time</label>
+            <input
+              id="estimatedTime"
+              name="estimatedTime"
+              type="text"
+              value={formData.estimatedTime}
+              onChange={handleChange}
+            />
+            <label htmlFor="materialsNeeded">Materials Needed</label>
+            <textarea
+              id="materialsNeeded"
+              name="materialsNeeded"
+              onChange={handleChange}
+              value={formData.materialsNeeded}
+            ></textarea>
+          </div>
         </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-          {validationErrors.description && (
-            <p className="validation--errors">{validationErrors.description}</p>
-          )}
-        </div>
-        {/* Add other form fields here as needed */}
-        <button type="submit">Create Course</button>
+        <button className="button" type="submit">Create Course</button>
+        <button className="button button-secondary" onClick={() => navigate('/')}>Cancel</button>
       </form>
-      <button onClick={() => navigate('/')}>Cancel</button>
     </div>
   );
 }
