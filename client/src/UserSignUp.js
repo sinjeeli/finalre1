@@ -30,9 +30,9 @@ function UserSignUp() {
         },
         body: JSON.stringify(formData),
       });
-
-      const data = await response.json();
+  
       if (!response.ok) {
+        const data = await response.json();
         if (data.errors) {
           setValidationErrors(data.errors);
         }
@@ -44,6 +44,7 @@ function UserSignUp() {
       console.error('Error signing up:', error);
     }
   };
+  
 
   return (
     <div className="form--centered">

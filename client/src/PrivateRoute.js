@@ -1,20 +1,18 @@
-import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Route, Navigate, useLocation } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 
-function PrivateRoute({ element: Element, ...rest }) {
+function PrivateRoute({ component: Component, ...rest }) {
   const { user } = useUserContext();
+  const location = useLocation();
 
   return (
-    <Route
-      {...rest}
+    <Route 
+      {...rest} 
       element={
-        user ? (
-          <Element />
-        ) : (
-          <Navigate to="/sign-in" replace state={{ from: rest.location.pathname }} />
-        )
-      }
+        user 
+          ? <Component /> 
+          : <Navigate to="/sign-in" state={{ from: location }} replace />
+      } 
     />
   );
 }

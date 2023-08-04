@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from './UserContext'; // make sure the path is correct
 
 function CreateCourse() {
   const navigate = useNavigate();
+  const { user, credentials } = useUserContext(); // <-- Call the hook here, at the top level of your component
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    // Add other form fields here as needed
+    userId: user.id, // Assuming the 'user' object contains an 'id' property
   });
 
   const [validationErrors, setValidationErrors] = useState({});
@@ -21,29 +24,34 @@ function CreateCourse() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
+    const credentialsBase64 = btoa(`${credentials.emailAddress}:${credentials.password}`); // <-- Use 'user' from the top-level context
+  
     try {
       const response = await fetch('http://localhost:5000/api/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Basic ${credentialsBase64}`,
         },
         body: JSON.stringify(formData),
       });
-
-      const data = await response.json();
-      if (!response.ok) {
-        if (data.errors) {
-          setValidationErrors(data.errors);
-        }
-      } else {
-        // Assuming you want to navigate back to the course list after successful creation
+      if (response.ok) {
         navigate('/');
-      }
+      } else {
+        const text = await response.text();
+        if (text) { // Only parse the response text as JSON if there is any text
+          const errorData = JSON.parse(text);
+          if (errorData.errors) {
+            setValidationErrors(errorData.errors);
+          }
+        }
+      } // This closing bracket was missing
     } catch (error) {
       console.error('Error creating course:', error);
     }
   };
-
+  
   return (
     <div className="wrap">
       <h2>Create Course</h2>

@@ -11,6 +11,8 @@ export const useUserContext = () => {
 // Create the UserProvider to wrap your application with
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [credentials, setCredentials] = useState(null); // <-- Add this line
+
 
   const signIn = async (emailAddress, password) => {
     try {
@@ -23,25 +25,30 @@ export const UserProvider = ({ children }) => {
 
       if (response.ok) {
         const user = await response.json();
+        setCredentials({ emailAddress, password }); // <-- Add this line
         setUser(user);
         return true;
       } else {
+        setCredentials(null); // <-- Add this line
         setUser(null);
         return false;
       }
     } catch (error) {
       console.error('Error signing in:', error);
+      setCredentials(null); // <-- Add this line
       setUser(null);
       return false;
     }
   };
 
+
   const signOut = () => {
     setUser(null);
+    setCredentials(null); // <-- Add this line
   };
 
   return (
-    <UserContext.Provider value={{ user, signIn, signOut }}>
+    <UserContext.Provider value={{ user, signIn, signOut, credentials }}> {/* <-- Add 'credentials' here */}
       {children}
     </UserContext.Provider>
   );
