@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from './UserContext'; // Import the useUserContext hook
+import ReactMarkdown from 'react-markdown'; // Import the ReactMarkdown component
 
 function CourseDetail({ match }) {
   const [course, setCourse] = useState(null);
@@ -50,7 +51,7 @@ function CourseDetail({ match }) {
     <div className="wrap">
       <h2>Course Detail</h2>
       <h3>{course.title}</h3>
-      <p>{course.description}</p>
+      <ReactMarkdown>{course.description}</ReactMarkdown>
       {user && user.id === course.userId && ( // Check if the authenticated user's ID matches the course owner's ID
         <>
           {/* Only show the "Update Course" and "Delete Course" buttons if the authenticated user's ID matches that of the course owner */}
