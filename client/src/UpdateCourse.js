@@ -12,8 +12,8 @@ function UpdateCourse() {
     materialsNeeded: '',
   });
 
-  const [validationErrors, setValidationErrors] = useState({});
-  const { credentials } = useUserContext(); // <-- Added this line
+  const [validationErrors, setValidationErrors] = useState([]);
+  const { credentials } = useUserContext();
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -33,8 +33,8 @@ function UpdateCourse() {
         console.error('Error fetching course details:', error);
       }
     };
-    fetchCourseDetails(); // Call the fetchCourseDetails function here
-  }, [id]); // Add id as a dependency to the useEffect hook
+    fetchCourseDetails();
+  }, [id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -46,6 +46,13 @@ function UpdateCourse() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Client-side validation
+    if (!formData.courseTitle || !formData.courseDescription) {
+      setValidationErrors(['Please provide a value for "Title"', 'Please provide a value for "Description"']);
+      return;
+    }
+
     const credentialsBase64 = btoa(`${credentials.emailAddress}:${credentials.password}`);
     try {
       const response = await fetch(`http://localhost:5000/api/courses/${id}`, {
@@ -60,14 +67,13 @@ function UpdateCourse() {
         }),
       });
 
-      if (!response.ok) {
+      if (response.ok) {
+        navigate(`/courses/${id}`);
+      } else {
         const data = await response.json();
         if (data.errors) {
           setValidationErrors(data.errors);
         }
-      } else {
-        // Assuming you want to navigate back to the course detail after successful update
-        navigate(`/courses/${id}`);
       }
     } catch (error) {
       console.error('Error updating course:', error);
@@ -77,6 +83,14 @@ function UpdateCourse() {
   return (
     <div className="wrap">
       <h2>Update Course</h2>
+      {validationErrors.length > 0 ? (
+        <div className="validation--errors">
+          <h3>Validation Errors</h3>
+          <ul>
+            {validationErrors.map((error, index) => <li key={index}>{error}</li>)}
+          </ul>
+        </div>
+      ) : null}
       <form onSubmit={handleSubmit}>
         <div className="main--flex">
           <div>
@@ -87,13 +101,8 @@ function UpdateCourse() {
               type="text"
               value={formData.courseTitle}
               onChange={handleChange}
-              required
             />
-            {validationErrors.title && (
-              <p className="validation--errors">{validationErrors.title}</p>
-            )}
 
-            {/* Display the course owner (e.g., "By Joe Smith") */}
             <p>By Joe Smith</p>
 
             <label htmlFor="courseDescription">Course Description</label>
@@ -102,11 +111,7 @@ function UpdateCourse() {
               name="courseDescription"
               value={formData.courseDescription}
               onChange={handleChange}
-              required
             />
-            {validationErrors.description && (
-              <p className="validation--errors">{validationErrors.description}</p>
-            )}
           </div>
           <div>
             <label htmlFor="estimatedTime">Estimated Time</label>
