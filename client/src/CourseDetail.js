@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useUserContext } from './UserContext'; // Import the useUserContext hook
 import ReactMarkdown from 'react-markdown'; // Import the ReactMarkdown component
 
-function CourseDetail({ match }) {
+function CourseDetail() {
   const [course, setCourse] = useState(null);
   const navigate = useNavigate();
-  const { user } = useUserContext(); // Use the useUserContext hook to get the authenticated user
+  const { user } = useUserContext();  // Use the useUserContext hook to get the authenticated user
+
+  // Use the useParams hook to get the route parameters
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchCourseDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/courses/${match.params.id}`);
+        const response = await fetch(`http://localhost:5000/api/courses/${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -26,11 +29,11 @@ function CourseDetail({ match }) {
 
     // Clean up the state when the component unmounts
     return () => setCourse(null);
-  }, [match.params.id]); // Include match.params.id in the dependency array
+  }, [id]); // Include id in the dependency array
 
   const handleDeleteCourse = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/courses/${match.params.id}`, {
+      const response = await fetch(`http://localhost:5000/api/courses/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -56,8 +59,7 @@ function CourseDetail({ match }) {
         <>
           {/* Only show the "Update Course" and "Delete Course" buttons if the authenticated user's ID matches that of the course owner */}
           <button onClick={handleDeleteCourse}>Delete Course</button>
-          <button onClick={() => navigate(`/update-course/${match.params.id}`)}>Update Course</button>
-        </>
+          <button onClick={() => navigate(`/courses/${id}/update`)}>Update Course</button>        </>
       )}
     </div>
   );
