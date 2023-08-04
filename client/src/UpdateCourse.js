@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 
 function UpdateCourse() {
-  const [courseOwnerId, setCourseOwnerId] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -30,7 +29,6 @@ function UpdateCourse() {
             estimatedTime: data.estimatedTime || '',
             materialsNeeded: data.materialsNeeded || '',
         });
-        setCourseOwnerId(data.userId);
       } catch (error) {
         console.error('Error fetching course details:', error);
       }
@@ -48,18 +46,7 @@ function UpdateCourse() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(typeof credentials.id, credentials.id);
-    console.log(typeof courseOwnerId, courseOwnerId);
-    console.log(credentials);
-//
 
-if (credentials.id !== courseOwnerId) {
-    navigate('/forbidden');
-    return;
-  }
-//
-
-  
 
     // Client-side validation
     if (!formData.courseTitle || !formData.courseDescription) {
