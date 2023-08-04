@@ -11,6 +11,8 @@ function UpdateCourse() {
     materialsNeeded: '',
   });
 
+  const [validationErrors, setValidationErrors] = useState({});
+
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
@@ -51,12 +53,15 @@ function UpdateCourse() {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (data.errors) {
+          setValidationErrors(data.errors);
+        }
+      } else {
+        // Assuming you want to navigate back to the course detail after successful update
+        navigate(`/courses/${id}`);
       }
-
-      // Assuming you want to navigate back to the course detail after successful update
-      navigate(`/courses/${id}`);
     } catch (error) {
       console.error('Error updating course:', error);
     }
@@ -77,6 +82,9 @@ function UpdateCourse() {
               onChange={handleChange}
               required
             />
+            {validationErrors.title && (
+              <p className="validation--errors">{validationErrors.title}</p>
+            )}
 
             {/* Display the course owner (e.g., "By Joe Smith") */}
             <p>By Joe Smith</p>
@@ -89,6 +97,9 @@ function UpdateCourse() {
               onChange={handleChange}
               required
             />
+            {validationErrors.description && (
+              <p className="validation--errors">{validationErrors.description}</p>
+            )}
           </div>
           <div>
             <label htmlFor="estimatedTime">Estimated Time</label>

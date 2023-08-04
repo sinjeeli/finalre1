@@ -9,6 +9,8 @@ function CreateCourse() {
     // Add other form fields here as needed
   });
 
+  const [validationErrors, setValidationErrors] = useState({});
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -28,12 +30,15 @@ function CreateCourse() {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (data.errors) {
+          setValidationErrors(data.errors);
+        }
+      } else {
+        // Assuming you want to navigate back to the course list after successful creation
+        navigate('/');
       }
-
-      // Assuming you want to navigate back to the course list after successful creation
-      navigate('/');
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -53,6 +58,9 @@ function CreateCourse() {
             onChange={handleChange}
             required
           />
+          {validationErrors.title && (
+            <p className="validation--errors">{validationErrors.title}</p>
+          )}
         </div>
         <div>
           <label htmlFor="description">Description:</label>
@@ -63,6 +71,9 @@ function CreateCourse() {
             onChange={handleChange}
             required
           />
+          {validationErrors.description && (
+            <p className="validation--errors">{validationErrors.description}</p>
+          )}
         </div>
         {/* Add other form fields here as needed */}
         <button type="submit">Create Course</button>

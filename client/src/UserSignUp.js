@@ -10,6 +10,8 @@ function UserSignUp() {
     password: '',
   });
 
+  const [validationErrors, setValidationErrors] = useState({});
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -29,12 +31,15 @@ function UserSignUp() {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (data.errors) {
+          setValidationErrors(data.errors);
+        }
+      } else {
+        // Assuming successful sign-up, redirect the user to the default route (list of courses)
+        navigate('/');
       }
-
-      // Assuming successful sign-up, redirect the user to the default route (list of courses)
-      navigate('/');
     } catch (error) {
       console.error('Error signing up:', error);
     }
@@ -53,6 +58,9 @@ function UserSignUp() {
           onChange={handleChange}
           required
         />
+        {validationErrors.firstName && (
+          <p className="validation--errors">{validationErrors.firstName}</p>
+        )}
 
         <label htmlFor="lastName">Last Name</label>
         <input
@@ -63,6 +71,9 @@ function UserSignUp() {
           onChange={handleChange}
           required
         />
+        {validationErrors.lastName && (
+          <p className="validation--errors">{validationErrors.lastName}</p>
+        )}
 
         <label htmlFor="emailAddress">Email Address</label>
         <input
@@ -73,6 +84,9 @@ function UserSignUp() {
           onChange={handleChange}
           required
         />
+        {validationErrors.emailAddress && (
+          <p className="validation--errors">{validationErrors.emailAddress}</p>
+        )}
 
         <label htmlFor="password">Password</label>
         <input
@@ -83,6 +97,9 @@ function UserSignUp() {
           onChange={handleChange}
           required
         />
+        {validationErrors.password && (
+          <p className="validation--errors">{validationErrors.password}</p>
+        )}
 
         <button className="button" type="submit">
           Sign Up
