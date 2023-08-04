@@ -58,15 +58,36 @@ function CourseDetail() {
 
   return (
     <div className="wrap">
-      <h2>Course Detail</h2>
-      <h3>{course.title}</h3>
-      <ReactMarkdown>{course.description}</ReactMarkdown>
-      {user && user.id === course.userId && ( // Check if the authenticated user's ID matches the course owner's ID
-        <>
-          {/* Only show the "Update Course" and "Delete Course" buttons if the authenticated user's ID matches that of the course owner */}
-          <button onClick={handleDeleteCourse}>Delete Course</button>
-          <button onClick={() => navigate(`/courses/${id}/update`)}>Update Course</button>        </>
-      )}
+      <div className="actions--bar">
+        <div className="wrap">
+          {user && user.id === course.userId && ( 
+            <>
+              <button className="button" onClick={() => navigate(`/courses/${id}/update`)}>Update Course</button>
+              <button className="button" onClick={handleDeleteCourse}>Delete Course</button>
+            </>
+          )}
+          <button className="button button-secondary" onClick={() => navigate('/')}>Return to List</button>
+        </div>
+      </div>
+      <div className="wrap">
+        <h2>Course Detail</h2>
+        <form>
+          <div className="main--flex">
+            <div>
+              <h3 className="course--detail--title">Course</h3>
+              <h4 className="course--name">{course.title}</h4>
+              <p>By {course.User.firstName} {course.User.lastName}</p>
+              <ReactMarkdown className="course--detail--title">{course.description}</ReactMarkdown>
+            </div>
+            <div>
+              <h3 className="course--detail--title">Estimated Time</h3>
+              <p>{course.estimatedTime}</p>
+              <h3 className="course--detail--title">Materials Needed</h3>
+              <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
