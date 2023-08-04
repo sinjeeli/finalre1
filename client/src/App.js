@@ -12,6 +12,7 @@ import { UserProvider } from './UserContext';
 import NotFound from './NotFound'; // <-- import NotFound component
 import UnhandledError from './UnhandledError'; // <-- import UnhandledError component
 import Header from './Header';
+import Forbidden from './Forbidden'; // <-- import Forbidden component
 
 
 import './App.css';
@@ -30,6 +31,7 @@ function ProtectedRoutes() {
       <Route path="/sign-out" element={<UserSignOut />} />
       <Route path="/notfound" element={<NotFound />} /> {/* <-- add NotFound route */}
       <Route path="/error" element={<UnhandledError />} /> {/* <-- add UnhandledError route */}
+      <Route path="/forbidden" element={<Forbidden />} /> {/* <-- add Forbidden route */}
       <Route path="*" element={<Navigate to="/notfound" />} /> {/* <-- catch-all route */}
     </Routes>
   );
