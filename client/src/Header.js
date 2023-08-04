@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useUserContext } from './UserContext';  // Import the useUserContext hook
 
-function Header({ user }) {
-  return (
+function Header() {
+    const { user } = useUserContext();  // Use the user object from the UserContext
+    
+    return (
     <header>
       <div className="wrap header--flex">
         <h1 className="header--logo">
@@ -12,7 +15,7 @@ function Header({ user }) {
           <ul className="header--signedin">
             {user ? (
               <>
-                <li>Welcome, {user.name}!</li>
+                <li>Welcome, {user.firstName} {user.lastName}!</li>
                 <li>
                   <Link to="/sign-out">Sign Out</Link>
                 </li>
