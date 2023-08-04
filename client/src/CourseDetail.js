@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from './UserContext'; // Import the useUserContext hook
 
 function CourseDetail({ match }) {
   const [course, setCourse] = useState(null);
   const navigate = useNavigate();
+  const { user } = useUserContext(); // Use the useUserContext hook to get the authenticated user
 
   useEffect(() => {
     const fetchCourseDetail = async () => {
@@ -49,8 +51,13 @@ function CourseDetail({ match }) {
       <h2>Course Detail</h2>
       <h3>{course.title}</h3>
       <p>{course.description}</p>
-      <button onClick={handleDeleteCourse}>Delete Course</button>
-      <button onClick={() => navigate(`/update-course/${match.params.id}`)}>Update Course</button>
+      {user && user.id === course.userId && ( // Check if the authenticated user's ID matches the course owner's ID
+        <>
+          {/* Only show the "Update Course" and "Delete Course" buttons if the authenticated user's ID matches that of the course owner */}
+          <button onClick={handleDeleteCourse}>Delete Course</button>
+          <button onClick={() => navigate(`/update-course/${match.params.id}`)}>Update Course</button>
+        </>
+      )}
     </div>
   );
 }
