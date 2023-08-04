@@ -8,6 +8,7 @@ import UpdateCourse from './UpdateCourse';
 import UserSignOut from './UserSignOut';
 import UserSignUp from './UserSignUp';
 import { UserProvider } from './UserContext'; // Import the UserProvider
+import PrivateRoute from './PrivateRoute';
 
 
 
@@ -40,12 +41,12 @@ function App() {
             <Routes>
               <Route path="/" element={<Courses />} />
               <Route path="/courses/:id" element={<CourseDetail />} />
-              <Route path="/create" element={<CreateCourse />} />
+              <PrivateRoute path="/create" element={<CreateCourse />} />
               <Route path="/sign-in" element={<UserSignIn />} />
-              <Route path="/courses/:id/update" element={<UpdateCourse />} />
+              <PrivateRoute path="/courses/:id/update" element={<UpdateCourse />} />
               <Route path="/sign-up" element={<UserSignUp />} />
               <Route path="/sign-out" element={<UserSignOut />} />
-              
+
               {/* Other routes... */}
             </Routes>
           </main>
