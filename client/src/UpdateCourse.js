@@ -54,11 +54,14 @@ function UpdateCourse() {
           'Content-Type': 'application/json',
           Authorization: `Basic ${credentialsBase64}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+        title: formData.courseTitle,
+        description: formData.courseDescription,
+        }),
       });
 
-      const data = await response.json();
       if (!response.ok) {
+        const data = await response.json();
         if (data.errors) {
           setValidationErrors(data.errors);
         }
