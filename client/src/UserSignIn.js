@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from './UserContext'; // Import the useUserContext hook
+
 
 function UserSignIn() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    emailAddress: '',
-    password: '',
-  });
+    const navigate = useNavigate();
+    const { signIn } = useUserContext(); // Use the signIn method from the UserContext
+    const [formData, setFormData] = useState({
+      emailAddress: '',
+      password: '',
+    });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value,
+        }));
+      };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Perform sign-in logic here...
-    navigate('/');
-  };
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        const { emailAddress, password } = formData;
+        const success = await signIn(emailAddress, password);
+        if (success) {
+          navigate('/');
+        }
+      };
 
   return (
     <div className="form--centered">
