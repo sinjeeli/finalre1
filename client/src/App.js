@@ -1,3 +1,4 @@
+// App.js
 import { BrowserRouter as Router, Route, Link, Navigate, Routes } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 import Courses from './Courses';
@@ -20,9 +21,9 @@ function ProtectedRoutes() {
     <Routes>
       <Route path="/" element={<Courses />} />
       <Route path="/courses/:id" element={<CourseDetail />} />
-      <Route path="/create-course" element={user ? <CreateCourse /> : <Navigate to="/sign-in" />} />
+      <Route path="/create-course" element={user ? <CreateCourse /> : <Navigate to="/sign-in" state={{ from: '/create-course' }} />} />
       <Route path="/sign-in" element={<UserSignIn />} />
-      <Route path="/courses/:id/update" element={user ? <UpdateCourse /> : <Navigate to="/sign-in" />} />
+      <Route path="/courses/:id/update" element={user ? <UpdateCourse /> : <Navigate to="/sign-in" state={{ from: '/courses/:id/update' }} />} />
       <Route path="/sign-up" element={<UserSignUp />} />
       <Route path="/sign-out" element={<UserSignOut />} />
     </Routes>
@@ -44,7 +45,7 @@ function App() {
                   <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <Link to="/create">Create Course</Link>
+                  <Link to="/create-course">Create Course</Link>
                 </li>
                 {/* Add other navigation links as needed */}
               </ul>

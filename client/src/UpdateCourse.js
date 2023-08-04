@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useUserContext } from './UserContext';
 
 function UpdateCourse() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ function UpdateCourse() {
   });
 
   const [validationErrors, setValidationErrors] = useState({});
+  const { credentials } = useUserContext(); // <-- Added this line
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -22,10 +24,10 @@ function UpdateCourse() {
         }
         const data = await response.json();
         setFormData({
-          courseTitle: data.title,
-          courseDescription: data.description,
-          estimatedTime: data.estimatedTime,
-          materialsNeeded: data.materialsNeeded,
+            courseTitle: data.title || '',
+            courseDescription: data.description || '',
+            estimatedTime: data.estimatedTime || '',
+            materialsNeeded: data.materialsNeeded || '',
         });
       } catch (error) {
         console.error('Error fetching course details:', error);
@@ -44,11 +46,13 @@ function UpdateCourse() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const credentialsBase64 = btoa(`${credentials.emailAddress}:${credentials.password}`);
     try {
       const response = await fetch(`http://localhost:5000/api/courses/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Basic ${credentialsBase64}`,
         },
         body: JSON.stringify(formData),
       });

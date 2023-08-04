@@ -1,10 +1,11 @@
+// UserSignIn.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';  // <-- Add useLocation import here
 import { useUserContext } from './UserContext'; // Import the useUserContext hook
-
 
 function UserSignIn() {
     const navigate = useNavigate();
+    const location = useLocation();  // <-- Get location here
     const { signIn } = useUserContext(); // Use the signIn method from the UserContext
     const [formData, setFormData] = useState({
       emailAddress: '',
@@ -24,7 +25,7 @@ function UserSignIn() {
         const { emailAddress, password } = formData;
         const success = await signIn(emailAddress, password);
         if (success) {
-          navigate('/');
+          navigate(location.state?.from || '/');  // <-- Change navigate here
         }
       };
 
@@ -61,7 +62,7 @@ function UserSignIn() {
         </button>
       </form>
       <p>
-        Don't have a user account? Click here to <a href="sign-up.html">sign up</a>!
+        Don't have a user account? Click here to <Link to="/sign-up">Sign Up</Link>
       </p>
     </div>
   );

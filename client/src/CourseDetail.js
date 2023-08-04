@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown'; // Import the ReactMarkdown componen
 function CourseDetail() {
   const [course, setCourse] = useState(null);
   const navigate = useNavigate();
-  const { user } = useUserContext();  // Use the useUserContext hook to get the authenticated user
+  const { user, credentials } = useUserContext();  // Use the useUserContext hook to get the authenticated user
 
   // Use the useParams hook to get the route parameters
   const { id } = useParams();
@@ -32,9 +32,13 @@ function CourseDetail() {
   }, [id]); // Include id in the dependency array
 
   const handleDeleteCourse = async () => {
+    const credentialsBase64 = btoa(`${credentials.emailAddress}:${credentials.password}`);
     try {
       const response = await fetch(`http://localhost:5000/api/courses/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Basic ${credentialsBase64}`,
+        },
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -45,6 +49,8 @@ function CourseDetail() {
       console.error('Error deleting course:', error);
     }
   };
+  
+  
 
   if (!course) {
     return <div>Loading...</div>;
