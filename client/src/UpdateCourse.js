@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 
+
 function UpdateCourse() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -35,7 +36,8 @@ function UpdateCourse() {
     };
     fetchCourseDetails();
   }, [id]);
-
+//Update the UpdateCourse component to redirect users to the /forbidden path if the requested course isn't owned by the authenticated user.
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -74,6 +76,7 @@ function UpdateCourse() {
         const data = await response.json();
         if (data.errors) {
           setValidationErrors(data.errors);
+          this.props.history.push('/forbidden');
         }
       }
     } catch (error) {
