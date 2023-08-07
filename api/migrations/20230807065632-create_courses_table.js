@@ -20,11 +20,11 @@ module.exports = {
       materialsNeeded: {
         type: Sequelize.STRING
       },
-      userId: {                     // Add this
-        type: Sequelize.INTEGER,    // Specify the type that matches the User's id type
+      userId: {                     //
+        type: Sequelize.INTEGER,    // 
         references: {
-          model: 'Users',           // 'Users' refers to the table name
-          key: 'id',                // 'id' refers to the column name in Users table
+          model: 'Users',           // 
+          key: 'id',                //
         }
       },
       createdAt: {

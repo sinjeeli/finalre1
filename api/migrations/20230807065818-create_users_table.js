@@ -25,7 +25,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-      // any additional fields you might need
+      //
     });
   },
   down: async (queryInterface, Sequelize) => {
