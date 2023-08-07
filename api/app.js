@@ -5,16 +5,15 @@ const app = express();
 const router = express.Router();
 const { sequelize } = require('./models');
 const cors = require('cors'); // Import cors
-const PORT = 5000;  // or any other desired port number
+const PORT = 5000;  //
 
 app.use(cors()); // use cors
 //
 
-const db = require('./models/index');  // replace with the path to your index file
+const db = require('./models/index');  // 
 
-// ... your other app setup logic ...
 
-db.sequelize.sync({ force: false })  // Set 'force' to 'true' only if you want to drop tables and recreate them
+db.sequelize.sync({ force: false })
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
