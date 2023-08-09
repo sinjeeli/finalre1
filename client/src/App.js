@@ -12,6 +12,7 @@ import NotFound from './NotFound';
 import UnhandledError from './UnhandledError'; 
 import Header from './Header';
 import Forbidden from './Forbidden'; 
+import React, { useEffect } from 'react';
 
 
 import './App.css';
@@ -19,12 +20,16 @@ import './App.css';
 function ProtectedRoutes() {
   const { user } = useUserContext();
 
+  useEffect(() => {
+    console.log("User updated:", user);
+  }, [user]);
+
   return (
     <Routes>
       <Route path="/" element={<Courses />} />
       <Route path="/courses/:id" element={<CourseDetail />} />
       <Route path="/create-course" element={user ? <CreateCourse /> : <Navigate to="/sign-in" state={{ from: '/create-course' }} />} />
-      <Route path="/sign-in" element={<UserSignIn />} />
+      <Route path="/sign-in" element={user ? <Navigate to="/" /> : <UserSignIn />} />
       <Route path="/courses/:id/update" element={user ? <UpdateCourse /> : <Navigate to="/sign-in" state={{ from: '/courses/:id/update' }} />} />
       <Route path="/sign-up" element={<UserSignUp />} />
       <Route path="/sign-out" element={<UserSignOut />} />

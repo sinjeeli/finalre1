@@ -64,8 +64,10 @@ function UpdateCourse() {
           Authorization: `Basic ${credentialsBase64}`,
         },
         body: JSON.stringify({
-        title: formData.courseTitle,
-        description: formData.courseDescription,
+          title: formData.courseTitle,
+          description: formData.courseDescription,
+          estimatedTime: formData.estimatedTime,
+          materialsNeeded: formData.materialsNeeded
         }),
       });
 
