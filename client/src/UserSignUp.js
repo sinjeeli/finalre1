@@ -22,10 +22,19 @@ function UserSignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Client-side validation
-    if (!formData.firstName || !formData.lastName || !formData.emailAddress || !formData.password) {
-      setValidationErrors(['All fields are required']);
+  
+    const errors = [];
+    if (!formData.firstName) errors.push('First name is required.');
+    if (!formData.lastName) errors.push('Last name is required.');
+    if (!formData.emailAddress) {
+      errors.push('Email address is required.');
+    } else if (!/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(formData.emailAddress)) {
+      errors.push('Email address is not valid.');
+    }
+    if (!formData.password) errors.push('Password is required.');
+    
+    if (errors.length > 0) {
+      setValidationErrors(errors);
       return;
     }
 
@@ -70,7 +79,6 @@ function UserSignUp() {
             type="text"
             value={formData.firstName}
             onChange={handleChange}
-            required
         />
 
         <label htmlFor="lastName">Last Name</label>
@@ -80,7 +88,6 @@ function UserSignUp() {
             type="text"
             value={formData.lastName}
             onChange={handleChange}
-            required
         />
 
         <label htmlFor="emailAddress">Email Address</label>
@@ -90,7 +97,6 @@ function UserSignUp() {
             type="email"
             value={formData.emailAddress}
             onChange={handleChange}
-            required
         />
 
         <label htmlFor="password">Password</label>
@@ -100,7 +106,6 @@ function UserSignUp() {
             type="password"
             value={formData.password}
             onChange={handleChange}
-            required
         />
 
         <button className="button" type="submit">
