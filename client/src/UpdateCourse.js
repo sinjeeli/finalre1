@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 
-
 function UpdateCourse() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,25 +17,35 @@ function UpdateCourse() {
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
+      const courseURL = `http://localhost:5000/api/courses/${id}`;
+      console.log('Fetching course details from URL:', courseURL); // Check the constructed URL
+
       try {
-        const response = await fetch(`http://localhost:5000/api/courses/${id}`);
+        const response = await fetch(courseURL);  // Use the courseURL here
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
         setFormData({
-            courseTitle: data.title || '',
-            courseDescription: data.description || '',
-            estimatedTime: data.estimatedTime || '',
-            materialsNeeded: data.materialsNeeded || '',
+          courseTitle: data.title || '',
+          courseDescription: data.description || '',
+          estimatedTime: data.estimatedTime || '',
+          materialsNeeded: data.materialsNeeded || '',
         });
       } catch (error) {
         console.error('Error fetching course details:', error);
       }
     };
-    fetchCourseDetails();
+
+    if (id) { // Ensure that 'id' is available
+      fetchCourseDetails();
+    } else {
+      console.error('Course ID is not available');
+    }
   }, [id]);
-  
+
+//
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
