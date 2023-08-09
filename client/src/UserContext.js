@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Create the UserContext
 const UserContext = createContext();
@@ -10,8 +10,21 @@ export const useUserContext = () => {
 
 // Create the UserProvider to wrap your application with
 export const UserProvider = ({ children }) => {
+  
   const [user, setUser] = useState(null);
   const [credentials, setCredentials] = useState(null);
+
+  //
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    const storedCredentials = localStorage.getItem('credentials');
+    if (storedUser && storedCredentials) {
+      setUser(JSON.parse(storedUser));
+      setCredentials(atob(storedCredentials));
+    }
+  }, []);
+
+  //
 
   const signIn = async (emailAddress, password) => {
     try {
@@ -26,6 +39,9 @@ export const UserProvider = ({ children }) => {
         const user = await response.json();
         setCredentials({ emailAddress, password });
         setUser(user);
+        // Store user and credentials in localStorage
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('credentials', btoa(`${emailAddress}:${password}`));
         return true;
       } else {
         setCredentials(null);
@@ -43,6 +59,10 @@ export const UserProvider = ({ children }) => {
   const signOut = () => {
     setUser(null);
     setCredentials(null);
+
+  // Clear user and credentials from localStorage
+  localStorage.removeItem('user');
+  localStorage.removeItem('credentials');
   };
 
   return (
