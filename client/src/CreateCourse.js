@@ -25,7 +25,14 @@ function CreateCourse() {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+  //
+  if(!credentials.emailAddress || !credentials.password) {
+    console.error("Credentials are not set properly.");
+    return;
+  }
+  //
+  console.log("Credentials before making request:", credentials);
+  //
     // Client-side validation
     if (!formData.title || !formData.description) {
       setValidationErrors(['Please provide a value for "Title"', 'Please provide a value for "Description"']);
@@ -43,6 +50,11 @@ function CreateCourse() {
         },
         body: JSON.stringify(formData),
       });
+      //
+      if (response.status !== 201) {
+        throw new Error('Failed to create course');
+    }
+    //
   
       if (response.ok) {
         navigate('/');

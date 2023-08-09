@@ -21,14 +21,20 @@ console.log("App rendered");
 //
 
 function ProtectedRoutes() {
-  const { user } = useUserContext();
-
-  console.log("User in ProtectedRoutes:", user);
-
-
+  const { user, isLoading } = useUserContext();
+  //
   useEffect(() => {
     console.log("User updated:", user);
   }, [user]);
+
+  //
+  if (isLoading) {
+    return <div>Loading...</div>;  // Or return a spinner component if you have one
+  }
+  //
+
+
+  console.log("User in ProtectedRoutes:", user);
 
   return (
     <Routes>
