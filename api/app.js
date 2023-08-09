@@ -129,6 +129,7 @@ router.get('/api/courses/:id', async (req, res) => {
 //
 router.put('/api/courses/:id', auth, async (req, res) => {
   console.log('Updating course');
+  console.log("Handler 1");
   const user = req.currentUser;
   const course = await Course.findByPk(req.params.id);
 
@@ -159,14 +160,13 @@ router.put('/api/courses/:id', auth, async (req, res) => {
       course.description = description;
     }
     //
-    if (typeof estimatedTime !== 'undefined') {
+    if (estimatedTime) {
       course.estimatedTime = estimatedTime;
     }
-    if (typeof materialsNeeded !== 'undefined') {
+    if (materialsNeeded) {
       course.materialsNeeded = materialsNeeded;
     }
-    
-  //
+
 
     // Save the updated course
     await course.save();
@@ -278,6 +278,8 @@ app.get('/api/courses/:id', async (req, res) => {
 // ...
 
 app.put('/api/courses/:id', auth, async (req, res) => {
+  console.log("Handler 2");
+
   const user = req.currentUser;
   const course = await Course.findByPk(req.params.id);
 
@@ -290,25 +292,12 @@ app.put('/api/courses/:id', auth, async (req, res) => {
   }
 
   // Get the updated title and description from the request body
-  const { title, description } = req.body;
-  //
+  const { title, description, estimatedTime, materialsNeeded } = req.body;
 
-  // Check if the properties are provided or not
-const isTitleProvided = typeof title !== 'undefined';
-const isDescriptionProvided = typeof description !== 'undefined';
-const isEstimatedTimeProvided = typeof estimatedTime !== 'undefined';
-const isMaterialsNeededProvided = typeof materialsNeeded !== 'undefined';
-//
-// If none of the properties is provided, return an error
-if (!isTitleProvided && !isDescriptionProvided && !isEstimatedTimeProvided && !isMaterialsNeededProvided) {
-  return res.status(400).json({ error: 'At least one property must be provided for updating the course.' });
-}
-//
-
-// If title and description are provided, make sure they are not empty or whitespace-only
-if (isTitleProvided && !title.trim() && isDescriptionProvided && !description.trim()) {
-  return res.status(400).json({ error: 'At least one of title or description must be provided for updating the course.' });
-}
+  // Check if both title and description are empty or contain only whitespace characters
+  if (!title.trim() && !description.trim()) {
+    return res.status(400).json({ error: 'At least one of title or description must be provided for updating the course.' });
+  }
 
   try {
     // Update the course with the provided data (if any)
@@ -318,6 +307,14 @@ if (isTitleProvided && !title.trim() && isDescriptionProvided && !description.tr
     if (description) {
       course.description = description;
     }
+    //
+    if (estimatedTime) {
+      course.estimatedTime = estimatedTime;
+    }
+    if (materialsNeeded) {
+      course.materialsNeeded = materialsNeeded;
+    }
+    
 
     // Save the updated course
     await course.save();
