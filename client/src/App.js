@@ -29,7 +29,7 @@ function ProtectedRoutes() {
 
   //
   if (isLoading) {
-    return <div>Loading...</div>;  // Or return a spinner component if you have one
+    return <div>Loading...</div>;  // 
   }
   //
 

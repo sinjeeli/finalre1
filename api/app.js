@@ -179,7 +179,7 @@ router.put('/api/courses/:id', auth, async (req, res) => {
       // send a 400 status with the error.
       res.status(400).json({ error: error.errors });
     } else {
-      // If it's an unknown error, send a 500 status.
+      // If it's unknown , send a 500 status.
       console.error(error);
       res.status(500).json({ error: 'Server Error' });
     }
@@ -208,7 +208,7 @@ router.post('/api/courses', auth, async (req, res) => {
     // Create the new course
     const createdCourse = await Course.create(newCourse);
 
-    // Return a 201 status with a location header to the newly created course.
+    // Return a 201 status 
     res.status(201).location(`/api/courses/${createdCourse.id}`).end();
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) {
@@ -300,7 +300,7 @@ app.put('/api/courses/:id', auth, async (req, res) => {
   }
 
   try {
-    // Update the course with the provided data (if any)
+    // Update the course with the provided data
     if (title) {
       course.title = title;
     }
@@ -314,9 +314,9 @@ app.put('/api/courses/:id', auth, async (req, res) => {
     if (materialsNeeded) {
       course.materialsNeeded = materialsNeeded;
     }
-    
 
-    // Save the updated course
+
+    // Save
     await course.save();
 
     // Return a 204 status.
@@ -332,9 +332,6 @@ app.put('/api/courses/:id', auth, async (req, res) => {
     }
   }
 });
-
-// ...
-
 
 app.delete('/api/courses/:id', auth, async (req, res) => {
   const user = req.currentUser;
@@ -363,7 +360,7 @@ app.delete('/api/courses/:id', auth, async (req, res) => {
 // Use the router
 app.use(router);
 
-// Add error handlers, etc.
+// Add error handlers
 function parseAuthHeader(req) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {

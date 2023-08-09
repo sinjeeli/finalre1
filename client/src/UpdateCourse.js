@@ -37,7 +37,7 @@ function UpdateCourse() {
       }
     };
 
-    if (id) { // Ensure that 'id' is available
+    if (id) { // check id
       fetchCourseDetails();
     } else {
       console.error('Course ID is not available');

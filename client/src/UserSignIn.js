@@ -7,7 +7,7 @@ function UserSignIn() {
     const location = useLocation();  
     const { signIn } = useUserContext(); 
     //
-    
+
     const [formData, setFormData] = useState({
       emailAddress: '',
       password: '',
@@ -26,7 +26,7 @@ function UserSignIn() {
         const { emailAddress, password } = formData;
         const success = await signIn(emailAddress, password);
         if (success) {
-          navigate(location.state?.from || '/');  // <-- Change navigate here
+          navigate(location.state?.from || '/');  //
         }
       };
 
