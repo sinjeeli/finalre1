@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Link, Navigate, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Navigate, Routes } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 import Courses from './Courses';
 import CourseDetail from './CourseDetail';
@@ -52,7 +52,6 @@ function ProtectedRoutes() {
     </Routes>
   );
 }
-
 function App() {
   return (
     <Router>
@@ -62,16 +61,6 @@ function App() {
             <Header />
           </header>
           <main>
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/create-course">Create Course</Link>
-                </li>
-              </ul>
-            </nav>
             <ProtectedRoutes />
           </main>
         </div>
@@ -81,3 +70,4 @@ function App() {
 }
 
 export default App;
+
