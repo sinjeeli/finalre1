@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Navigate, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Navigate, Routes, useLocation } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 import Courses from './Courses';
 import CourseDetail from './CourseDetail';
@@ -22,6 +22,7 @@ console.log("App rendered");
 
 function ProtectedRoutes() {
   const { user, isLoading } = useUserContext();
+  const location = useLocation();
   //
   useEffect(() => {
     console.log("User updated:", user);
@@ -42,7 +43,7 @@ function ProtectedRoutes() {
       <Route path="/courses/:id" element={<CourseDetail />} />
       <Route path="/create-course" element={user ? <CreateCourse /> : <Navigate to="/sign-in" state={{ from: '/create-course' }} />} />
       <Route path="/sign-in" element={<UserSignIn />} />
-      <Route path="/courses/:id/update" element={user ? <UpdateCourse /> : <Navigate to="/sign-in" state={{ from: '/courses/:id/update' }} />} />
+      <Route path="/courses/:id/update" element={user ? <UpdateCourse /> : <Navigate to="/sign-in" state={{ from: location.pathname }} />} />
       <Route path="/sign-up" element={<UserSignUp />} />
       <Route path="/sign-out" element={<UserSignOut />} />
       <Route path="/notfound" element={<NotFound />} /> 
