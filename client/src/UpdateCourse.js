@@ -29,8 +29,8 @@ function UpdateCourse() {
         setFormData({
           courseTitle: data.title || '',
           courseDescription: data.description || '',
-          estimatedTime: data.estimatedTime || '',
-          materialsNeeded: data.materialsNeeded || '',
+          estimatedTime: data.estimatedTime || '', // <- Changed key name here
+          materialsNeeded: data.materialsNeeded || '', // <- Changed key name here
         });
       } catch (error) {
         console.error('Error fetching course details:', error);
@@ -134,7 +134,7 @@ function UpdateCourse() {
             <label htmlFor="estimatedTime">Estimated Time</label>
             <input
               id="estimatedTime"
-              name="estimatedTime"
+              name="estimatedTime" 
               type="text"
               value={formData.estimatedTime}
               onChange={handleChange}
