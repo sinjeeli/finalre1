@@ -16,9 +16,15 @@ import React, { useEffect } from 'react';
 
 
 import './App.css';
+//
+console.log("App rendered");
+//
 
 function ProtectedRoutes() {
   const { user } = useUserContext();
+
+  console.log("User in ProtectedRoutes:", user);
+
 
   useEffect(() => {
     console.log("User updated:", user);
@@ -29,7 +35,7 @@ function ProtectedRoutes() {
       <Route path="/" element={<Courses />} />
       <Route path="/courses/:id" element={<CourseDetail />} />
       <Route path="/create-course" element={user ? <CreateCourse /> : <Navigate to="/sign-in" state={{ from: '/create-course' }} />} />
-      <Route path="/sign-in" element={user ? <Navigate to="/" /> : <UserSignIn />} />
+      <Route path="/sign-in" element={<UserSignIn />} />
       <Route path="/courses/:id/update" element={user ? <UpdateCourse /> : <Navigate to="/sign-in" state={{ from: '/courses/:id/update' }} />} />
       <Route path="/sign-up" element={<UserSignUp />} />
       <Route path="/sign-out" element={<UserSignOut />} />

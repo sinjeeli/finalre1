@@ -73,13 +73,16 @@ function UpdateCourse() {
 
       if (response.ok) {
         navigate(`/courses/${id}`);
-      } else {
+    } else {
         const data = await response.json();
         if (data.errors) {
-          setValidationErrors(data.errors);
-          this.props.history.push('/forbidden');
+            setValidationErrors(data.errors);
         }
-      }
+        if (response.status === 403) {
+            navigate('/forbidden');
+        }
+    }
+    
     } catch (error) {
       console.error('Error updating course:', error);
     }

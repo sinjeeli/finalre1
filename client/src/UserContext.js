@@ -37,8 +37,9 @@ export const UserProvider = ({ children }) => {
 
       if (response.ok) {
         const user = await response.json();
-        setCredentials({ emailAddress, password });
         setUser(user);
+        console.log("User set in context:", user);  // <-- Correct placement here
+        setCredentials({ emailAddress, password });
         // Store user and credentials in localStorage
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('credentials', btoa(`${emailAddress}:${password}`));
